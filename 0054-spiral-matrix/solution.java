@@ -1,39 +1,45 @@
 class Solution {
-    public List<Integer> spiralOrder(int[][] arr) {
-        List<Integer> ll = new ArrayList<>();
-        int row=arr.length;
-        int col=arr[0].length;
-        int top=0;
-        int bot=row-1;
-        int left=0;
-        int right=col-1;
-        int tot=row*col;
-        int count=0;
-        while(count<tot){
-            //top wall;
-        for(int j=left;j<=right &&count<tot;j++){
-            ll.add(arr[top][j]);
-            count++;
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+
+        if (matrix == null || matrix.length == 0)
+            return result;
+
+        int top = 0;
+        int bottom = matrix.length - 1;
+        int left = 0;
+        int right = matrix[0].length - 1;
+
+        while (top <= bottom && left <= right) {
+            // Left → Right
+            for (int i = left; i <= right; i++) {
+                result.add(matrix[top][i]);
+            }
+            top++;
+
+            // Top → Bottom
+            for (int i = top; i <= bottom; i++) {
+                result.add(matrix[i][right]);
+            }
+            right--;
+
+            // Right → Left
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    result.add(matrix[bottom][i]);
+                }
+                bottom--;
+            }
+
+            // Bottom → Top
+            if (left <= right) {
+                for (int i = bottom; i >= top; i--) {
+                    result.add(matrix[i][left]);
+                }
+                left++;
+            }
         }
-        top++;
-        //right wall
-        for(int i=top;i<=bot && count<tot;i++){
-            ll.add(arr[i][right]);
-            count++;
-        }
-        right--;
-        //bottom wall
-        for(int j=right;j>=left && count<tot;j--){
-            ll.add(arr[bot][j]);
-            count++;
-        }
-        bot--;
-        //left wall
-        for(int j=bot;j>=top && count<tot;j--){
-            ll.add(arr[j][left]);
-            count++;
-        }
-        left++;
-        }return ll;
+
+        return result;
     }
 }
