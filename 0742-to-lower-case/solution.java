@@ -1,16 +1,10 @@
 class Solution {
     public String toLowerCase(String s) {
-        String ans = "";
-
+        StringBuilder sb = new StringBuilder();
         for(int i=0;i<s.length();i++){
-            int ascii = (int) s.charAt(i);
-            if(ascii >= 65 && ascii <= 90){
-                ascii += 32;
-                ans += (char) ascii;
-            }else{
-                ans+= (char) ascii;
-            }
+            char ch=s.charAt(i);
+            sb.append(Character.toLowerCase(ch));
         }
-        return ans;
+        return sb.toString();
     }
 }
