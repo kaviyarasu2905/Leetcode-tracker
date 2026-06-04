@@ -1,32 +1,15 @@
 class Solution {
     public int thirdMax(int[] nums) {
-       //three pointers tecknique
-//using long.MIN_VALUE bcz,nums[i] can contain [Integer.MIN_VALUE].
-        // "-2^31 <= nums[i] <= 2^31 - 1"
-        long first=Long.MIN_VALUE;
-        long second=Long.MIN_VALUE;
-        long third=Long.MIN_VALUE;
-    
-        for(int i=0; i<nums.length; i++)
-        {
-
-            if(nums[i]>first)
-            {
-                third=second;
-                second=first;
-                first=nums[i];
-            }
-            else if(nums[i]>second && nums[i]!=first)
-            {
-                third=second;
-                second=nums[i];
-            }
-            else if(nums[i]>third && nums[i]!=first && nums[i]!=second)
-            {
-                third=nums[i];
-            }
+        Set<Integer> set=new HashSet<>();
+        for(int i=0;i<nums.length;i++){
+            set.add(nums[i]);
         }
-        if(third==Long.MIN_VALUE) return (int)first;
-        return (int)third;
+        List<Integer> list=new ArrayList<>(set);
+        Collections.sort(list,Collections.reverseOrder());
+        if(list.size()>=3){
+            return list.get(2);
+        }else{
+            return list.get(0);
+        }
     }
 }
