@@ -1,0 +1,48 @@
+// Last updated: 08/07/2026, 15:36:52
+import java.util.*;
+
+class Solution {
+    public long maximumTotalDamage(int[] power) {
+            // Count frequencies
+                    Map<Integer, Integer> cnt = new HashMap<>();
+                            for (int p : power) {
+                                        cnt.merge(p, 1, Integer::sum);
+                                                }
+                                                        List<Integer> uniques = new ArrayList<>(cnt.keySet());
+                                                                Collections.sort(uniques);
+                                                                        int n = uniques.size();
+
+                                                                                // dp[i] = best from index i onward
+                                                                                        long[] dp = new long[n + 1];  // dp[n] = 0 base case
+
+                                                                                                // Precompute jump indices: next[i] = first index j > i where uniques[j] > uniques[i] + 2
+                                                                                                        int[] next = new int[n];
+                                                                                                                for (int i = 0; i < n; i++) {
+                                                                                                                            long x = uniques.get(i);
+                                                                                                                                        // we want index of first element > x + 2
+                                                                                                                                                    int j = Collections.binarySearch(uniques, (int)(x + 3));
+                                                                                                                                                                if (j < 0) {
+                                                                                                                                                                                j = -j - 1;
+                                                                                                                                                                                            } else {
+                                                                                                                                                                                                            // if found exactly x+3, that is > x+2, so it's ok
+                                                                                                                                                                                                                            // if found something <= x+2, move j forward
+                                                                                                                                                                                                                                            while (j < n && uniques.get(j) <= x + 2) {
+                                                                                                                                                                                                                                                                j++;
+                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                        next[i] = j;
+                                                                                                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                                                                                                        // Fill DP from back to front
+                                                                                                                                                                                                                                                                                                                                for (int i = n - 1; i >= 0; i--) {
+                                                                                                                                                                                                                                                                                                                                            // Option 1: skip this
+                                                                                                                                                                                                                                                                                                                                                        long skip = dp[i + 1];
+                                                                                                                                                                                                                                                                                                                                                                    // Option 2: take this
+                                                                                                                                                                                                                                                                                                                                                                                long take = uniques.get(i).longValue() * cnt.get(uniques.get(i));
+                                                                                                                                                                                                                                                                                                                                                                                            take += (next[i] <= n ? dp[next[i]] : 0);
+                                                                                                                                                                                                                                                                                                                                                                                                        dp[i] = Math.max(skip, take);
+                                                                                                                                                                                                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                                                                                                                                                                                                        return dp[0];
+                                                                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                            }
