@@ -1,17 +1,21 @@
 class Solution {
-    public int missingInteger(int[] nums) {
-        int countSum = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i - 1] + 1 == nums[i]) countSum += nums[i];
+    public int missingInteger(int[] A) {
+        int n = A.length;
+        Set<Integer> seen = new HashSet<>(n);
+
+        for (int num : A)
+            seen.add(num);
+        int sum = A[0];
+
+        for (int i = 1; i < n; i++) {
+            if (A[i] == A[i - 1] + 1)
+                sum += A[i];
             else break;
         }
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) {
-            if (countSum == nums[i]) {
-                countSum++;
-            }
-        }
-        return countSum;
+
+        while (seen.contains(sum))
+            sum++;
+
+        return sum;
     }
 }
-
